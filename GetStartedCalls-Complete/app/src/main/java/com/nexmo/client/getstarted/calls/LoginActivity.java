@@ -2,6 +2,7 @@ package com.nexmo.client.getstarted.calls;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,6 +13,7 @@ import com.nexmo.client.request_listener.NexmoRequestListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends BaseActivity {
 
@@ -25,10 +27,38 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void onLoginJaneClick(View view) {
+        if (GetJWTForUser("JWT_JANE")) return;
+
         loginToSdk(NexmoHelper.JWT_JANE);
+
+    }
+
+    private boolean GetJWTForUser(String username) {
+        //Some url endpoint that you may have
+        String myUrl = "http://aurorascienceexploration.com:8000/generateJwt?user=" + username;
+        //String to place our result in
+        String result;
+        //Instantiate new instance of our class
+        HttpGetRequest getRequest = new HttpGetRequest();
+
+        //Perform the doInBackground method, passing in our url
+        try {
+            result = getRequest.execute(myUrl).get();
+
+            Log.d(NexmoHelper.TAG, "NexmoLoginListener.Login remote web request "+ result);
+
+            loginToSdk(result);
+
+            return true;
+        }catch (Exception eex)
+        {
+            Log.e(NexmoHelper.TAG, "NexmoLoginListener.Login remote web request "+ eex.toString());
+        }
+        return false;
     }
 
     public void onLoginJoeClick(View view) {
+        if (GetJWTForUser("JWT_JOE")) return;
         loginToSdk(NexmoHelper.JWT_JOE);
     }
 
