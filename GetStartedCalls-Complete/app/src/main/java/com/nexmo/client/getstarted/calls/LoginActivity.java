@@ -9,11 +9,16 @@ import android.widget.Button;
 import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoUser;
 import com.nexmo.client.request_listener.NexmoApiError;
+import com.nexmo.client.request_listener.NexmoConnectionListener;
 import com.nexmo.client.request_listener.NexmoRequestListener;
+import com.nexmo.minirtcsdk.devicelayer.OnNetworkConnectionStateChangedListener;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class LoginActivity extends BaseActivity {
 
@@ -24,6 +29,13 @@ public class LoginActivity extends BaseActivity {
         setUiAccordingToEnabledFeatures();
 
         NexmoHelper.init(getApplicationContext());
+
+        NexmoClient.get().setConnectionListener(new NexmoConnectionListener() {
+            @Override
+            public void onConnectionStatusChange(@NonNull ConnectionStatus connectionStatus, @NonNull ConnectionStatusReason connectionStatusReason) {
+                Log.v(NexmoHelper.TAG, "NexmoConnectionListener.Login onConnectionStatusChange "+ connectionStatus +" " + connectionStatusReason);
+            }
+        });
     }
 
     public void onLoginJaneClick(View view) {
@@ -63,20 +75,26 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void loginToSdk(String token) {
-        NexmoClient.get().login(token, new NexmoRequestListener<NexmoUser>() {
+        NexmoClient.get().login(token);
 
+        NexmoClient.get().getUser("CL_USER1", new NexmoRequestListener<NexmoUser>() {
             @Override
-            public void onError(NexmoApiError nexmoApiError) {
-                notifyError(nexmoApiError);
+            public void onError(@NonNull NexmoApiError nexmoApiError) {
+                Log.e(NexmoHelper.TAG, "NexmoLoginListener.Login getUser error "+ nexmoApiError.toString());
             }
 
             @Override
-            public void onSuccess(NexmoUser user) {
+            public void onSuccess(@Nullable NexmoUser nexmoUser) {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+        if(NexmoClient.get().getUser() != null) {
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 

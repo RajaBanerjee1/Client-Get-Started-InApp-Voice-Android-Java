@@ -32,7 +32,7 @@
         android:textSize="26sp" />
 
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         app:backgroundTint="@color/green"
         app:fabSize="normal" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_hangup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,7 +2,7 @@ package com.nexmo.client.getstarted.calls;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +14,6 @@ import com.nexmo.client.NexmoIncomingCallListener;
 import com.nexmo.client.request_listener.NexmoApiError;
 import com.nexmo.client.request_listener.NexmoRequestListener;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,9 +82,9 @@ public class MainActivity extends BaseActivity {
         TextView tvOr2 = findViewById(R.id.tvOr2);
         Button btnCallUser = findViewById(R.id.btnCallUser);
         Button btnCallPhone = findViewById(R.id.btnCallPhone);
-
-        title.setText(String.format("Hi, %s!", NexmoHelper.getUserName()));
-
+        if(NexmoClient.get().getUser() != null) {
+            title.setText(String.format("Hi, %s!", NexmoHelper.getUserName()));
+        }
         List<NexmoHelper.Features> featuresList = Arrays.asList(NexmoHelper.enabledFeatures);
         if (featuresList.contains(NexmoHelper.Features.IN_APP_to_IN_APP)){
             tvOr1.setVisibility(View.VISIBLE);

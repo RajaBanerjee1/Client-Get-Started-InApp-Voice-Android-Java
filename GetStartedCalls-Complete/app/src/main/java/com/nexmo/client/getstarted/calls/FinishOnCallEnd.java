@@ -1,6 +1,6 @@
 package com.nexmo.client.getstarted.calls;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.nexmo.client.NexmoCallEventListener;
@@ -10,10 +10,9 @@ import com.nexmo.client.NexmoMediaActionState;
 
 import java.lang.ref.WeakReference;
 
-import static android.support.constraint.Constraints.TAG;
-
 public class FinishOnCallEnd implements NexmoCallEventListener {
     private WeakReference<AppCompatActivity> activityRef;
+    private String TAG = "NexmoFinishOnCallEnd";
 
     FinishOnCallEnd(AppCompatActivity activity) {
         this.activityRef = new WeakReference<>(activity);
